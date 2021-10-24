@@ -6,7 +6,7 @@ function App() {
 
   return (
     <div className="App">
-      <LineChart width={730} height={250} data={data} key={data}>
+      <LineChart width={1000} height={500} data={data} key={data}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="timestamp" interval="preserveEnd" tickFormatter={(val) => new Date(val).toLocaleTimeString()} />
         <YAxis interval="preserveEnd" unit="mbps" />
