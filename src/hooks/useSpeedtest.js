@@ -8,6 +8,9 @@ const useSpeedtest = () => {
   const test = useCallback(async () => {
     const downloadWorker = await fetch("ndt7-download-worker.min.js").then(resp => resp.text())
     const uploadWorker = await fetch("ndt7-upload-worker.min.js").then(resp => resp.text())
+    setDownloadTestRunning(true)
+    setUploadTestRunning(true)
+    resultsRef.current.push({ timestamp: Date.now() })
     ndt7.test(
       {
         userAcceptedDataPolicy: true,
@@ -15,10 +18,6 @@ const useSpeedtest = () => {
         uploadworkerfile: URL.createObjectURL(new Blob([uploadWorker]))
       },
       {
-        serverDiscovery: function () {
-          setDownloadTestRunning(true)
-          setUploadTestRunning(true)
-        },
         serverChosen: function (server) {
           console.log('Testing to:', {
             machine: server.machine,
@@ -29,12 +28,11 @@ const useSpeedtest = () => {
           if (data.LastServerMeasurement) {
             const goodput = data.LastClientMeasurement.MeanClientMbps;
             const res = {
-              type: "download",
               completionTime: Date.now(),
               goodput,
               data,
             }
-            resultsRef.current = [res, ...resultsRef.current]
+            resultsRef.current[resultsRef.current.length - 1].download = res
             setDownloadTestRunning(false)
           }
         },
@@ -47,7 +45,7 @@ const useSpeedtest = () => {
               goodput,
               data,
             }
-            resultsRef.current = [res, ...resultsRef.current]
+            resultsRef.current[resultsRef.current.length - 1].upload = res
             setUploadTestRunning(false)
           }
         },
@@ -62,7 +60,7 @@ const useSpeedtest = () => {
     setInterval(test, 30000)
   }, [test])
 
-  return {downloadTestRunning, uploadTestRunning, data: resultsRef.current}
+  return { downloadTestRunning, uploadTestRunning, data: resultsRef.current }
 }
 
 export default useSpeedtest
