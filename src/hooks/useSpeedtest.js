@@ -13,7 +13,7 @@ const useSpeedtest = () => {
     resultsRef.current.push({ timestamp: Date.now() })
     ndt7.test(
       {
-        userAcceptedDataPolicy: true,
+        userAcceptedDataPolicy: true, // fixme
         downloadworkerfile: URL.createObjectURL(new Blob([downloadWorker])),
         uploadworkerfile: URL.createObjectURL(new Blob([uploadWorker]))
       },
