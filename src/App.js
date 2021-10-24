@@ -1,13 +1,17 @@
-import { useCallback, useEffect } from 'react'
-import ndt7 from '@m-lab/ndt7'
-import logo from './logo.svg';
-import './App.css';
+import { useCallback, useEffect, useRef, useState } from 'react'
+import ndt7 from '@m-lab/ndt7';
 
 function App() {
-  const test = useCallback(() => {
+  const resultsRef = useRef([])
+  const [mostRecentDatapoint, setMostRecentDatapoint] = useState()
+  const test = useCallback(async () => {
+    const downloadWorker = await fetch("ndt7-download-worker.min.js").then(resp => resp.text())
+    const uploadWorker = await fetch("ndt7-upload-worker.min.js").then(resp => resp.text())
     ndt7.test(
-      { 
-        userAcceptedDataPolicy: true 
+      {
+        userAcceptedDataPolicy: true,
+        downloadworkerfile: URL.createObjectURL(new Blob([downloadWorker])),
+        uploadworkerfile: URL.createObjectURL(new Blob([uploadWorker]))
       },
       {
         serverChosen: function (server) {
@@ -25,6 +29,8 @@ function App() {
               `Download test is complete:
   Instantaneous server bottleneck bandwidth estimate: ${serverBw} Mbps
   Mean client goodput: ${clientGoodput} Mbps`);
+            resultsRef.current = [data, ...resultsRef.current]
+            setMostRecentDatapoint(Date.now())
           }
         },
         uploadComplete: function (data) {
@@ -37,37 +43,29 @@ function App() {
               `Upload test is complete:
   Mean server throughput: ${serverBw} Mbps
   Mean client goodput: ${clientGoodput} Mbps`);
-          } else {
-            console.log({ data })
+            resultsRef.current = [data, ...resultsRef.current]
+            setMostRecentDatapoint(Date.now())
           }
         },
         error: function (err) {
           console.error('Error while running the test:', err.message);
         },
       })
-  }, [])
+  }, [resultsRef])
 
   useEffect(() => {
     test()
-    setInterval(test, 5000)
+    setInterval(test, 30000)
   }, [test])
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div>
+        {mostRecentDatapoint && `Most recent completed test: ${new Date(mostRecentDatapoint).toLocaleTimeString()}`}
+      </div>
+      <div>
+        {JSON.stringify(resultsRef.current, null, 2)}
+      </div>
     </div>
   );
 }
