@@ -16,7 +16,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "react-scripts build && cd build && cp index.html 200.html && surge . -d speedtest.pdavids.website"
   },
   "eslintConfig": {
     "extends": [
