@@ -53,12 +53,16 @@ const useSpeedtest = () => {
           console.error('Error while running the test:', err.message);
         },
       })
-  }, [resultsRef])
+
+  }, [])
 
   useEffect(() => {
-    test()
-    setInterval(test, 30000)
-  }, [test])
+    if (!downloadTestRunning && !uploadTestRunning) {
+      test()
+      const intervalId = setInterval(test, 30000);
+      return () => clearInterval(intervalId)
+    }
+  }, [downloadTestRunning, test, uploadTestRunning])
 
   return { downloadTestRunning, uploadTestRunning, data: resultsRef.current }
 }
