@@ -15,20 +15,20 @@ function App() {
           <ResponsiveContainer width="75%" height={500}>
             <LineChart data={data} key={data}>
               <CartesianGrid strokeDasharray="3 5" />
-              <Tooltip labelFormatter={(val) => new Date(val).toLocaleTimeString()} />
+              <Tooltip labelFormatter={(val) => new Date(val).toLocaleTimeString()} formatter={(value) => `${Math.round(value * 100)/100}mbps`} />
               <XAxis dataKey="timestamp" interval="preserveEnd" tickFormatter={(val) => new Date(val).toLocaleTimeString()} />
               <Legend formatter={(value) => {
                 var showSpinner = (value === "Download" && downloadTestRunning) || (value === "Upload" && uploadTestRunning)
                 return <span>{value} <Spinner size="sm" style={showSpinner ? {} : { visibility: 'hidden' }} animation="grow" color={value === "Download" ? "#8884d8" : "#ffc658"} /></span>
               }} />
 
-              <YAxis yAxisId="left" interval="preserveEnd" unit="mbps" tick={{ fill: '#8884d8' }} />
+              <YAxis yAxisId="left" interval="preserveEnd" unit="mbps" tick={{ fill: '#8884d8' }} width={100} />
               <Line dataKey="download.goodput" strokeWidth="2px" yAxisId="left" connectNulls stroke="#8884d8" dot={{ fill: '#8884d8' }} activeDot={{ r: 6, fill: '#8884d8', stroke: 'white' }} name="Download" />
               <ReferenceLine y={50} yAxisId="left" label={{ position: 'insideLeft', value: "Video streaming", fill: "#8884d8" }} stroke="#8884d8" strokeDasharray="3 2" alwaysShow />
               <ReferenceLine y={70} yAxisId="left" label={{ position: 'insideLeft', value: "Video chat", fill: "#8884d8" }} stroke="#8884d8" strokeDasharray="3 2" alwaysShow />
               <ReferenceLine y={90} yAxisId="left" label={{ position: 'insideLeft', value: "4k streaming", fill: "#8884d8" }} stroke="#8884d8" strokeDasharray="3 2" alwaysShow />
 
-              <YAxis yAxisId="right" orientation="right" interval="preserveEnd" unit="mbps" tick={{ fill: '#ffc658' }} />
+              <YAxis yAxisId="right" orientation="right" interval="preserveEnd" unit="mbps" tick={{ fill: '#ffc658' }} width={100} />
               <Line dataKey="upload.goodput" strokeWidth="2px" yAxisId="right" connectNulls stroke="#ffc658" dot={{ fill: '#ffc658' }} activeDot={{ r: 6, fill: '#ffc658', stroke: 'white' }} name="Upload" />
               <ReferenceLine y={1} yAxisId="right" label={{ position: 'insideRight', value: "Video streaming", fill: "#ffc658" }} stroke="#ffc658" strokeDasharray="3 2" alwaysShow />
               <ReferenceLine y={3} yAxisId="right" label={{ position: 'insideRight', value: "Video chat", fill: "#ffc658" }} stroke="#ffc658" strokeDasharray="3 2" alwaysShow />
