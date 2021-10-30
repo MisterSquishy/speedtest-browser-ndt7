@@ -23,13 +23,13 @@ function App() {
               }} />
 
               <YAxis yAxisId="left" interval="preserveEnd" unit="mbps" tick={{ fill: '#8884d8' }} width={100} />
-              <Line dataKey="download.goodput" strokeWidth="2px" yAxisId="left" connectNulls stroke="#8884d8" dot={{ fill: '#8884d8' }} activeDot={{ r: 6, fill: '#8884d8', stroke: 'white' }} name="Download" />
+              <Line dataKey="download.goodput" strokeWidth="2px" yAxisId="left" connectNulls stroke="#8884d8" dot={{ fill: '#8884d8' }} activeDot={{ r: 6, fill: '#8884d8', stroke: 'white' }} name="Download" isAnimationActive={false} />
               <ReferenceLine y={50} yAxisId="left" label={{ position: 'insideLeft', value: "Video streaming", fill: "#8884d8" }} stroke="#8884d8" strokeDasharray="3 2" alwaysShow />
               <ReferenceLine y={70} yAxisId="left" label={{ position: 'insideLeft', value: "Video chat", fill: "#8884d8" }} stroke="#8884d8" strokeDasharray="3 2" alwaysShow />
               <ReferenceLine y={90} yAxisId="left" label={{ position: 'insideLeft', value: "4k streaming", fill: "#8884d8" }} stroke="#8884d8" strokeDasharray="3 2" alwaysShow />
 
               <YAxis yAxisId="right" orientation="right" interval="preserveEnd" unit="mbps" tick={{ fill: '#ffc658' }} width={100} />
-              <Line dataKey="upload.goodput" strokeWidth="2px" yAxisId="right" connectNulls stroke="#ffc658" dot={{ fill: '#ffc658' }} activeDot={{ r: 6, fill: '#ffc658', stroke: 'white' }} name="Upload" />
+              <Line dataKey="upload.goodput" strokeWidth="2px" yAxisId="right" connectNulls stroke="#ffc658" dot={{ fill: '#ffc658' }} activeDot={{ r: 6, fill: '#ffc658', stroke: 'white' }} name="Upload" isAnimationActive={false} />
               <ReferenceLine y={1} yAxisId="right" label={{ position: 'insideRight', value: "Video streaming", fill: "#ffc658" }} stroke="#ffc658" strokeDasharray="3 2" alwaysShow />
               <ReferenceLine y={3} yAxisId="right" label={{ position: 'insideRight', value: "Video chat", fill: "#ffc658" }} stroke="#ffc658" strokeDasharray="3 2" alwaysShow />
             </LineChart>
